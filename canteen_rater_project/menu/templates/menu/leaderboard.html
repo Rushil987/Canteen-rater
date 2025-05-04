@@ -1,0 +1,23 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <h1>Leaderboard: Top Rated Dishes</h1>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr style="background-color: #eaeaea;">
+            <th style="padding: 10px; border: 1px solid #ccc;">Rank</th>
+            <th style="padding: 10px; border: 1px solid #ccc;">Dish Name</th>
+            <th style="padding: 10px; border: 1px solid #ccc;">Average Rating</th>
+        </tr>
+        {% for dish in dishes %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ccc;">{{ forloop.counter }}</td>
+            <td style="padding: 10px; border: 1px solid #ccc;">
+                <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a>
+            </td>
+            <td style="padding: 10px; border: 1px solid #ccc;">
+                {{ dish.avg_rating|floatformat:1|default:"No ratings" }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Leaderboard: Top-Rated Dishes</h1>
+
+        {% if dishes %}
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Dish Name</th>
+                        <th>Average Rating</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dish in dishes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a>
+                            </td>
+                            <td>
+                                {% if dish.avg_rating %}
+                                    {{ dish.avg_rating|floatformat:1 }}
+                                {% else %}
+                                    No ratings
+                                {% endif %}
+                            </td>
+                            <td>{{ dish.date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No dishes available for leaderboard yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

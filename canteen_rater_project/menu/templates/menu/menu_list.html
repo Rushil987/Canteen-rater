@@ -1,0 +1,17 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <h1>Today's Menu</h1>
+    {% for dish in dishes %}
+        <div class="dish-card">
+            <h2>
+                <a href="{% url 'dish_detail' dish.id %}" style="text-decoration: none; color: #007bff;">
+                    {{ dish.name }}
+                </a>
+            </h2>
+            <p>{{ dish.description }}</p>
+            <p class="rating">Average Rating: {{ dish.average_rating|default:"No ratings yet" }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+

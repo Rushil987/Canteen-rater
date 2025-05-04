@@ -1,0 +1,30 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Today's Menu</h1>
+
+        {% if dishes %}
+            <div class="dish-list">
+                {% for dish in dishes %}
+                    <div class="dish-card">
+                        <h3>
+                            <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a>
+                        </h3>
+                        <p>{{ dish.description }}</p>
+                        <p><strong>Date:</strong> {{ dish.date }}</p>
+                        <p><strong>Average Rating:</strong> 
+                            {% if dish.avg_rating %}
+                                {{ dish.avg_rating|floatformat:1 }}
+                            {% else %}
+                                No ratings yet
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No menu added for today.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Canteen Menu Rater</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding-top: 60px;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #343a40;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        nav a {
+            color: white;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        .content {
+            max-width: 960px;
+            margin: auto;
+            padding: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+        <div>
+            <strong>Canteen Menu Rater</strong> |
+            <a href="{% url 'menu_list' %}">Home</a>
+            <a href="{% url 'leaderboard' %}">Leaderboard</a>
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+                Welcome, {{ user.username }} |
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </nav>    
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

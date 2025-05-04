@@ -1,0 +1,77 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <h1>Admin Dashboard</h1>
+
+    <h2>Most Liked Dish</h2>
+    {% if most_liked %}
+        <p><strong>{{ most_liked.name }}</strong> (Avg Rating: {{ most_liked.avg_rating|floatformat:1 }})</p>
+    {% else %}
+        <p>No ratings yet.</p>
+    {% endif %}
+
+    <h2>Least Liked Dish</h2>
+    {% if least_liked %}
+        <p><strong>{{ least_liked.name }}</strong> (Avg Rating: {{ least_liked.avg_rating|floatformat:1 }})</p>
+    {% else %}
+        <p>No ratings yet.</p>
+    {% endif %}
+
+    <h2>Average Rating per Day</h2>
+    <ul>
+        {% for entry in avg_ratings_per_day %}
+            <li>{{ entry.date }} — {{ entry.avg|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Ratings Submitted per Day</h2>
+    <ul>
+        {% for entry in ratings_per_day %}
+            <li>{{ entry.date }} — {{ entry.count }} ratings</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Chart for Average Ratings per Day -->
+    <h3>Average Ratings per Day</h3>
+    <canvas id="avgRatingsChart" width="400" height="200"></canvas>
+
+    <!-- Chart for Ratings Submitted per Day -->
+    <h3>Ratings Submitted per Day</h3>
+    <canvas id="ratingsCountChart" width="400" height="200"></canvas>
+
+    <script>
+        // Average Ratings per Day Line Chart
+        var avgRatingsData = {
+            labels: [{% for entry in avg_ratings_per_day %}'{{ entry.date }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Average Rating',
+                data: [{% for entry in avg_ratings_per_day %}{{ entry.avg }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                tension: 0.1
+            }]
+        };
+        var avgRatingsConfig = {
+            type: 'line',
+            data: avgRatingsData,
+        };
+        new Chart(document.getElementById('avgRatingsChart'), avgRatingsConfig);
+
+        // Ratings Count per Day Bar Chart
+        var ratingsCountData = {
+            labels: [{% for entry in ratings_per_day %}'{{ entry.date }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Number of Ratings',
+                data: [{% for entry in ratings_per_day %}{{ entry.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+        var ratingsCountConfig = {
+            type: 'bar',
+            data: ratingsCountData,
+        };
+        new Chart(document.getElementById('ratingsCountChart'), ratingsCountConfig);
+    </script>
+{% endblock %}

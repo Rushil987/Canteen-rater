@@ -1,0 +1,26 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <h1>{{ dish.name }}</h1>
+    <p>{{ dish.description }}</p>
+
+    <p class="rating">
+        Average Rating: {{ dish.average_rating|default:"No ratings yet" }}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            {% if user_rating %}Update Rating{% else %}Submit Rating{% endif %}
+        </button>
+    </form>
+
+    {% if user_rating %}
+        <div class="existing">
+            You rated this {{ user_rating.rating }}/5.<br>
+            Your review: "{{ user_rating.review }}"
+        </div>
+    {% endif %}
+{% endblock %}
+
